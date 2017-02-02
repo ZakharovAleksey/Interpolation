@@ -3,8 +3,6 @@
 #ifndef QUADRATIC_INTERPOLATION_IMPL
 #define QUADRATIC_INTERPOLATION_IMPL
 
-//#include"quadratic_interpolation.h
-
 template<typename T>
 QuadraticInterpolationSolver<T>::QuadraticInterpolationSolver() : InterpolationSolver() {}
 
@@ -39,19 +37,9 @@ void QuadraticInterpolationSolver<T>::BuildInterpolation()
 		curTuple.leftBoundary = inputPairs_.at(i - 1).arg;
 		curTuple.rightBoundary = inputPairs_.at(i + 1).arg;
 
-		std::cout << "a = " << curTuple.a << " b = " << curTuple.b  << "c = " << curTuple.c << "\n";
 		spline_.push_back(curTuple);
 	}
 
-}
-
-template<typename T>
-inline void QuadraticInterpolationSolver<T>::FindAllInterpolationValues()
-{
-	for (auto i : outputPoints_)
-	{
-		std::cout << FindInterpolationValue(i) << std::endl;
-	}
 }
 
 template<typename T>

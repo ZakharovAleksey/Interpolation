@@ -7,6 +7,9 @@
 
 #include<vector>
 
+// Structure wich store pair:
+// - agr (argument or x-coordinate of the point)
+// - value (value or y = f(x) of this point)
 template<typename T>
 struct Pair
 {
@@ -18,7 +21,15 @@ struct Pair
 	Pair(T point, T value) : arg(point), value(value) { }
 };
 
+// Comparator for further std::sort procedure
+template<typename T>
+bool PairComparator(const Pair<T> & left, const Pair<T> & right)
+{
+	return (left.arg < right.arg) ? true : false;
+}
 
+
+// Parent for all InterpolationSolver classes
 template<typename T>
 class InterpolationSolver : public iInterpolation<T>
 {
@@ -32,7 +43,9 @@ public:
 	void DisplayInputData() const;
 
 	void BuildInterpolation() override;
-	void FindAllInterpolationValues() override;
+
+	std::vector<Pair<T>> FindAllInterpolationValues() override;
+
 	T FindInterpolationValue(T const x) override;
 
 protected:
@@ -44,8 +57,3 @@ protected:
 #include"interpolation_impl.h"
 
 #endif // !INTERPOLATION
-
-
-
-
-

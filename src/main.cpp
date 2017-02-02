@@ -10,7 +10,7 @@ int main()
 
 	try
 	{
-		TaskManager<float> manager("a", "b");
+		TaskManager<float> manager("a", "b", "c");
 		manager.Solve();
 	}
 	catch (const std::exception& ex)

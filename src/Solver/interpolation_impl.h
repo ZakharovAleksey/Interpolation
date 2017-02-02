@@ -37,12 +37,24 @@ inline void InterpolationSolver<T>::DisplayInputData() const
 }
 
 
-
 template<typename T>
 void InterpolationSolver<T>::BuildInterpolation() { }
 
 template<typename T>
-inline void InterpolationSolver<T>::FindAllInterpolationValues() { }
+inline std::vector<Pair<T>> InterpolationSolver<T>::FindAllInterpolationValues() 
+{
+	std::vector<Pair<T>> result;
+	Pair<T> curPair;
+
+	for (auto x : outputPoints_)
+	{
+		curPair.arg = x;
+		curPair.value = FindInterpolationValue(x);
+		result.push_back(curPair);
+	}
+
+	return result;
+}
 
 template<typename T>
 T InterpolationSolver<T>::FindInterpolationValue(T const x) { return T(); }

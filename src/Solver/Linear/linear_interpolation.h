@@ -12,13 +12,13 @@ class LinearInterpolationSolver : public InterpolationSolver<T>
 {
 public:
 
-	// Structure wich store information about current interval
-	// Equation of line: y = ax + b
+	// Structure wich store information about current spline interval
+	// Equation: y = ax + b
 	template<typename T1>
 	struct LinearTuple
 	{
-		T1 a;
-		T1 b;
+		double a;
+		double b;
 		T1 leftBoundary;
 		T1 rightBoundary;
 
@@ -30,11 +30,7 @@ public:
 	LinearInterpolationSolver();
 	~LinearInterpolationSolver() {}
 
-	// Build interpolation coeffisients
 	void BuildInterpolation() override;
-	// Find interpolation values for all input argumnets
-	void FindAllInterpolationValues() override;
-	// Find interpolation value of input argumnet
 	T FindInterpolationValue(T const x) override;
 
 private:

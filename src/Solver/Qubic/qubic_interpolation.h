@@ -12,15 +12,15 @@ class QubicInterpolationSolver : public InterpolationSolver<T>
 {
 public:
 
-	// Structure wich store information about current interval
-	// Equation of line: y = ax + b
+	// Structure wich store information about current spline interval
+	// Equation: y = a + b (x - x0) + c (x - x0)^2 + d (x - x0)^3
 	template<typename T1>
 	struct QubicTuple
 	{
-		T1 a;
-		T1 b;
-		T1 c;
-		T1 d;
+		double a;
+		double b;
+		double c;
+		double d;
 		T1 leftBoundary;
 		T1 rightBoundary;
 
@@ -32,11 +32,7 @@ public:
 	QubicInterpolationSolver();
 	~QubicInterpolationSolver() {}
 
-	// Build interpolation coeffisients
 	void BuildInterpolation() override;
-	// Find interpolation values for all input argumnets
-	void FindAllInterpolationValues() override;
-	// Find interpolation value of input argumnet
 	T FindInterpolationValue(T const x) override;
 
 private:

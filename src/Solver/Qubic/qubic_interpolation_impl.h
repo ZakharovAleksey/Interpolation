@@ -66,14 +66,6 @@ void QubicInterpolationSolver<T>::BuildInterpolation()
 	}
 }
 
-template<typename T>
-inline void QubicInterpolationSolver<T>::FindAllInterpolationValues()
-{
-	for (auto i : outputPoints_)
-	{
-		std::cout << FindInterpolationValue(i) << std::endl;
-	}
-}
 
 template<typename T>
 T QubicInterpolationSolver<T>::FindInterpolationValue(T const x)

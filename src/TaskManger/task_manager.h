@@ -17,13 +17,15 @@ template<typename T>
 class TaskManager
 {
 public:
-	TaskManager(std::string fileName1, std::string fileName2);
+	TaskManager(std::string fileName1, std::string fileName2, std::string outFileName);
 	~TaskManager();
 
+	// Implements solving procedure
 	void Solve();
 
 private:
 
+	// Function allow user to choose interpolation order
 	void ChooseInterpolationType();
 
 
@@ -35,13 +37,19 @@ private:
 	/// <param name="fileName"> Name of input file </param>
 	void GetDataFromFile(std::ifstream & in, const int fileId, std::string const & fileName);
 
+	void WriteResultToFile(const std::vector<Pair<T>> & res) const;
+
 	InterpolationSolver<T>* solverPtr_;
 
-
+	// First input file data
 	std::string fileName1_;
 	long int pointNumber1_;
+
+	// Second input file data
 	std::string fileName2_;
 	long int pointNumber2_;
+
+	std::string outFileName_;
 };
 
 #include"task_manager_impl.h"

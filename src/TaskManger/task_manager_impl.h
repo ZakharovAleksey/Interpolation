@@ -6,6 +6,7 @@
 
 #include<fstream>
 #include<vector>
+#include <algorithm> 
 #include<iostream>
 #include "task_manager.h"
 
@@ -17,7 +18,7 @@ enum class InterpolationType
 };
 
 template<typename T>
-TaskManager<T>::TaskManager(std::string fileName1, std::string fileName2) : fileName1_(fileName1), fileName2_(fileName2)
+TaskManager<T>::TaskManager(std::string fileName1, std::string fileName2, std::string outFileName) : fileName1_(fileName1), fileName2_(fileName2), outFileName_(outFileName)
 {
 	ChooseInterpolationType();
 
@@ -41,7 +42,14 @@ template<typename T>
 inline void TaskManager<T>::Solve()
 {
 	solverPtr_->BuildInterpolation();
-	solverPtr_->FindAllInterpolationValues();
+	std::vector<Pair<T>> result = solverPtr_->FindAllInterpolationValues();
+
+	std::cout << "Ñalculation finished successfully!\n";
+
+	for (auto o : result)
+		std::cout << o.arg << " ->" << o.value << std::endl;
+
+	WriteResultToFile(result);
 }
 
 template<typename T>
@@ -103,6 +111,7 @@ inline void TaskManager<T>::GetDataFromFile(std::ifstream & in, const int fileId
 		// Read number of points in the file
 		in >> pointNumber1_;
 
+		// Check on the correct input size
 		if (pointNumber1_ <= 0)
 		{
 			in.close();
@@ -112,7 +121,7 @@ inline void TaskManager<T>::GetDataFromFile(std::ifstream & in, const int fileId
 		}
 		else
 		{
-			// If first file - read pairs : (arg, value)
+			// If first file - read pairs : (arg, value) or (x, y =f(x))
 			if (fileId == 1)
 			{
 				std::vector<Pair<T>> vectorOfPairs;
@@ -123,9 +132,13 @@ inline void TaskManager<T>::GetDataFromFile(std::ifstream & in, const int fileId
 					in >> curPair.arg >> curPair.value;
 					vectorOfPairs.push_back(curPair);
 				}
+
+				// Input data could be in wrong order, so we sort the data before future usage
+				std::sort(vectorOfPairs.begin(), vectorOfPairs.end(), PairComparator<T>);
+
 				solverPtr_->SetInutPairs(vectorOfPairs);
 			}
-			// If second file -  read args only
+			// If second file -  read args only or (x)
 			else if (fileId == 2)
 			{
 				std::vector<T> pointsVector;
@@ -145,6 +158,30 @@ inline void TaskManager<T>::GetDataFromFile(std::ifstream & in, const int fileId
 	else
 	{
 		std::string exceptionMessage = "Could not open input file : " + fileName + ".txt";
+		throw exceptionMessage;
+	}
+}
+
+template<typename T>
+inline void TaskManager<T>::WriteResultToFile(const std::vector<Pair<T>> & res) const
+{
+	std::ofstream out;
+	out.open(outFileName_ + ".txt");
+
+	if (out.is_open())
+	{
+		// Write number of points and result data in format : x _ y = f(x)
+		out << res.size() << std::endl;
+		for (auto i : res)
+			out << i.arg << " " << i.value << std::endl;
+
+		out.close();
+	}
+	else
+	{
+		out.close();
+
+		std::string exceptionMessage = "Could not open output file : " + outFileName_ + ".txt";
 		throw exceptionMessage;
 	}
 }

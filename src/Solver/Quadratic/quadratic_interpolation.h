@@ -12,14 +12,14 @@ class QuadraticInterpolationSolver : public InterpolationSolver<T>
 {
 public:
 
-	// Structure wich store information about current interval
-	// Equation of parabola: y = ax^2 + bx + c
+	// Structure wich store information about current spline interval
+	// Equation: y = ax^2 + bx + c
 	template<typename T1>
 	struct QuadraticTuple
 	{
-		T1 a;
-		T1 b;
-		T1 c;
+		double a;
+		double b;
+		double c;
 		T1 leftBoundary;
 		T1 rightBoundary;
 
@@ -31,11 +31,7 @@ public:
 	QuadraticInterpolationSolver();
 	~QuadraticInterpolationSolver() {}
 
-	// Build interpolation coeffisients
 	void BuildInterpolation() override;
-	// Find interpolation values for all input argumnets
-	void FindAllInterpolationValues() override;
-	// Find interpolation value of input argumnet
 	T FindInterpolationValue(T const x) override;
 
 private:
