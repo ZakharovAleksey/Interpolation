@@ -11,6 +11,7 @@ int main()
 	try
 	{
 		TaskManager<int> manager("a", "b");
+		manager.Solve();
 	}
 	catch (const std::exception& ex)
 	{

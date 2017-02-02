@@ -14,17 +14,27 @@ TaskManager<T>::TaskManager(std::string fileName1, std::string fileName2) : file
 {
 	pointNumber1_ = -1;
 	pointNumber2_ = -1;
+	solverPtr_ = new LinearInterpolationSolver<T>();
 
 	std::ifstream in;
+
 
 	GetDataFromFile(in, 1, fileName1_);
 	GetDataFromFile(in, 2, fileName2_);
 
 	std::cout << "The data is ready for interpolation procedure.\n";
+	solverPtr_->DisplayInputData();
 }
 
 template<typename T>
 TaskManager<T>::~TaskManager() {}
+
+template<typename T>
+inline void TaskManager<T>::Solve()
+{
+	solverPtr_->BuildInterpolation();
+	solverPtr_->FindAllInterpolationValues();
+}
 
 template<typename T>
 inline void TaskManager<T>::GetDataFromFile(std::ifstream & in, const int fileId, std::string const & fileName)
@@ -55,8 +65,8 @@ inline void TaskManager<T>::GetDataFromFile(std::ifstream & in, const int fileId
 				{
 					in >> curPair.arg >> curPair.value;
 					vectorOfPairs.push_back(curPair);
-					std::cout << curPair.arg << " " << curPair.value << std::endl;
 				}
+				solverPtr_->SetInutPairs(vectorOfPairs);
 			}
 			// If second file -  read args only
 			else if (fileId == 2)
@@ -68,8 +78,8 @@ inline void TaskManager<T>::GetDataFromFile(std::ifstream & in, const int fileId
 				{
 					in >> curPoint;
 					pointsVector.push_back(curPoint);
-					std::cout << curPoint << std::endl;
 				}
+				solverPtr_->SetOutputPoints(pointsVector);
 			}
 		}
 

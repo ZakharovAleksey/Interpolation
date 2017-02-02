@@ -1,21 +1,13 @@
 #pragma once
 
-#include<string>
-#include<cstring>
-
 #ifndef TASK_MANAGER
 #define TASK_MANAGER
 
-template<typename T>
-struct Pair
-{
-	T arg;
-	T value;
+#include"..\Solver\Interpolation.h"
+#include"../Solver/Linear/linear_interpolation.h"
 
-	Pair() : arg(T()), value(T()) { }
-
-	Pair(T point, T value) : arg(point), value(value) { }
-};
+#include<string>
+#include<cstring>
 
 
 template<typename T>
@@ -24,6 +16,8 @@ class TaskManager
 public:
 	TaskManager(std::string fileName1, std::string fileName2);
 	~TaskManager();
+
+	void Solve();
 
 private:
 
@@ -35,7 +29,7 @@ private:
 	/// <param name="fileName"> Name of input file </param>
 	void GetDataFromFile(std::ifstream & in, const int fileId, std::string const & fileName);
 
-
+	InterpolationSolver<T>* solverPtr_;
 
 
 	std::string fileName1_;
