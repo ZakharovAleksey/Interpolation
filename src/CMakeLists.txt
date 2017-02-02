@@ -1,32 +1,24 @@
 cmake_minimum_required(VERSION 3.5)
 
-#set(PATH_MATH "math")
-#set(PATH_AREA "modeling_area")
-#set(PATH_PHYS "phys_values")
-#set(PATH_SOLV "solver")
-#set(PATH_BC "solver/bc")
+#set(PATH_SOLVER "Solver")
+#set(PATH_LINEAR_SOLVER "Solver/Linear")
+#set(PATH_QUADRATIC_SOLVER "Solver/Quadratic")
+#set(PATH_QUBIC_SOLVER "Solver/Qubic")
+#set(PATH_MANAGER "TaskManger")
 
 set(
 	source_list
-#	"math/array_func_impl.h"
-#	"math/my_matrix_2d.h"
-#	"math/my_matrix_2d_impl.h"
-#	"math/my_matrix_3d.h"
-#	"math/my_matrix_3d_impl.h"
-#	"math/my_matrix_interface.h"
-#	"modeling_area/fluid.h"
-#	"modeling_area/medium.h"
-#	"phys_values/distribution_func.h"
-#	"phys_values/distribution_func_impl.h"
-#	"phys_values/macroscopic_param.h"
-#	"phys_values/macroscopic_param_impl.h"
-#	"solver/solver.h"
-#	"solver/srt.h"
-#	"solver/bc/bc.h"
-#	"modeling_area/fluid.cpp"
-#	"modeling_area/medium.cpp"
-#	"solver/srt.cpp"
-#	"solver/bc/bc.cpp"
+	"Solver/iInterpolation.h"
+	"Solver/interpolation.h"
+	"Solver/interpolation_impl.h"
+	"Solver/Linear/linear_interpolation.h"
+	"Solver/Linear/linear_interpolation_impl.h"
+	"Solver/Quadratic/quadratic_interpolation.h"
+	"Solver/Quadratic/quadratic_interpolation_impl.h"
+	"Solver/Qubic/qubic_interpolation.h"
+	"Solver/Qubic/qubic_interpolation_impl.h"
+	"TaskManger/task_manager.h"
+	"TaskManger/task_manager_impl.h"
 	"main.cpp"
 )
 
