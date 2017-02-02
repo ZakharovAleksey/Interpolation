@@ -4,12 +4,14 @@
 #define TASK_MANAGER
 
 #include"..\Solver\Interpolation.h"
+
 #include"../Solver/Linear/linear_interpolation.h"
 #include"../Solver/Quadratic/quadratic_interpolation.h"
+#include"../Solver/Qubic/qubic_interpolation.h"
+
 
 #include<string>
 #include<cstring>
-
 
 template<typename T>
 class TaskManager
@@ -22,10 +24,13 @@ public:
 
 private:
 
+	void ChooseInterpolationType();
+
+
 	/// <summary>
 	/// Function gets necessary data from appropriate file
 	/// </summary>
-	/// <param name="in"> ifstream </param>
+	/// <param name="in"> Ifstream object for reading data from the file </param>
 	/// <param name="fileNumber"> Number of input file (1 or 2) </param>
 	/// <param name="fileName"> Name of input file </param>
 	void GetDataFromFile(std::ifstream & in, const int fileId, std::string const & fileName);

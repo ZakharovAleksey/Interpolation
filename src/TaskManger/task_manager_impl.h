@@ -9,15 +9,23 @@
 #include<iostream>
 #include "task_manager.h"
 
+enum class InterpolationType
+{
+	Linear = 1,
+	Quadratic = 2,
+	Qubic = 3
+};
+
 template<typename T>
 TaskManager<T>::TaskManager(std::string fileName1, std::string fileName2) : fileName1_(fileName1), fileName2_(fileName2)
 {
+	ChooseInterpolationType();
+
 	pointNumber1_ = -1;
 	pointNumber2_ = -1;
-	//solverPtr_ = new LinearInterpolationSolver<T>();
-	solverPtr_ = new QuadraticInterpolationSolver<T>();
-	std::ifstream in;
 
+	std::ifstream in;
+	std::cout << "The data is loading...\n";
 
 	GetDataFromFile(in, 1, fileName1_);
 	GetDataFromFile(in, 2, fileName2_);
@@ -34,6 +42,55 @@ inline void TaskManager<T>::Solve()
 {
 	solverPtr_->BuildInterpolation();
 	solverPtr_->FindAllInterpolationValues();
+}
+
+template<typename T>
+inline void TaskManager<T>::ChooseInterpolationType()
+{
+	std::cout << "Choose interpolation type and input apropriate number:\n "
+		<< " 1 - Linear interpolation (first order).\n "
+		<< " 2 - Quadratic interpolation (secon order).\n "
+		<< " 3 - Cubic interpolation(third order). \n";
+	std::cout << "Your input: ";
+
+	int interpolOrder = -1;
+	bool isCorrectInput = false;
+
+	// While user input is incorrect ask him to input valid interpolation type
+	while (!isCorrectInput)
+	{
+		std::cin >> interpolOrder;
+
+		// If user input is not a number
+		if (!std::cin)
+		{
+			// Clear all user input
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+			std::cout << "Wrong input! Please input 1(Linear) 2(Quadratic) or 3 (Qubic) interpolation.\nYour input:  ";
+			continue;
+		}
+
+		switch (interpolOrder)
+		{
+		case int(InterpolationType::Linear) :
+			solverPtr_ = new LinearInterpolationSolver<T>();
+			isCorrectInput = true;
+			break;
+		case int(InterpolationType::Quadratic) :
+			solverPtr_ = new QuadraticInterpolationSolver<T>();
+			isCorrectInput = true;
+			break;
+		case int(InterpolationType::Qubic) :
+			solverPtr_ = new QubicInterpolationSolver<T>();
+			isCorrectInput = true;
+			break;
+		default:
+			std::cout << "Wrong input! Please input 1(Linear) 2(Quadratic) or 3 (Qubic) interpolation.\nYour input:  ";
+			break;
+		}
+	}
 }
 
 template<typename T>
