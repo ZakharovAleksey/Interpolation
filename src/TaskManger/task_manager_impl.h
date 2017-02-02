@@ -14,8 +14,8 @@ TaskManager<T>::TaskManager(std::string fileName1, std::string fileName2) : file
 {
 	pointNumber1_ = -1;
 	pointNumber2_ = -1;
-	solverPtr_ = new LinearInterpolationSolver<T>();
-
+	//solverPtr_ = new LinearInterpolationSolver<T>();
+	solverPtr_ = new QuadraticInterpolationSolver<T>();
 	std::ifstream in;
 
 

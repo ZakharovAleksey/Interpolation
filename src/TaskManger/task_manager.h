@@ -5,6 +5,7 @@
 
 #include"..\Solver\Interpolation.h"
 #include"../Solver/Linear/linear_interpolation.h"
+#include"../Solver/Quadratic/quadratic_interpolation.h"
 
 #include<string>
 #include<cstring>
