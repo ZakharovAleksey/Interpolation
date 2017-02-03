@@ -13,15 +13,18 @@
 #include<string>
 #include<cstring>
 
+
 template<typename T>
 class TaskManager
 {
 public:
+
 	TaskManager(std::string fileName1, std::string fileName2, std::string outFileName);
 	~TaskManager();
 
 	// Implements solving procedure
 	void Solve();
+
 
 private:
 
@@ -36,6 +39,7 @@ private:
 	/// <param name="fileNumber"> Number of input file (1 or 2) </param>
 	/// <param name="fileName"> Name of input file </param>
 	void GetDataFromFile(std::ifstream & in, const int fileId, std::string const & fileName);
+
 
 	void WriteResultToFile(const std::vector<Pair<T>> & res) const;
 

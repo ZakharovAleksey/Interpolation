@@ -1,8 +1,9 @@
-#include "Interpolation.h"
 #pragma once
 
 #ifndef INTERPOLATION_IMPL
 #define INTERPOLATION_IMPL
+
+#include "Interpolation.h"
 
 #include<iostream>
 

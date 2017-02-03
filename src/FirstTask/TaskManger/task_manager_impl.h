@@ -49,6 +49,7 @@ inline void TaskManager<T>::Solve()
 	WriteResultToFile(result);
 }
 
+
 template<typename T>
 inline void TaskManager<T>::ChooseInterpolationType()
 {
