@@ -32,7 +32,7 @@ TaskManager<T>::TaskManager(std::string fileName1, std::string fileName2, std::s
 	GetDataFromFile(in, 2, fileName2_);
 
 	std::cout << "The data is ready for interpolation procedure.\n";
-	solverPtr_->DisplayInputData();
+	//solverPtr_->DisplayInputData();
 }
 
 template<typename T>
@@ -45,9 +45,6 @@ inline void TaskManager<T>::Solve()
 	std::vector<Pair<T>> result = solverPtr_->FindAllInterpolationValues();
 
 	std::cout << "Ñalculation finished successfully!\n";
-
-	for (auto o : result)
-		std::cout << o.arg << " ->" << o.value << std::endl;
 
 	WriteResultToFile(result);
 }

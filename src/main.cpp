@@ -26,7 +26,5 @@ int main()
 		std::cout << "Unknown exception!" << std::endl;
 	}
 
-
-
 	return 0;
 }
