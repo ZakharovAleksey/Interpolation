@@ -11,12 +11,14 @@ template<typename T>
 LocalPositionSolver<T>::~LocalPositionSolver() {}
 
 template<typename T>
-inline std::vector<std::pair<std::string, T>> LocalPositionSolver<T>::CalculateLocalPositions(std::vector<std::tuple<std::string, std::string, int>>& tuples, double TIn)
+inline std::map<std::string, T> /*std::vector<std::pair<std::string, T>>*/ LocalPositionSolver<T>::CalculateLocalPositions(std::vector<std::tuple<std::string, std::string, int>>& tuples, double TIn)
 {
 	std::ifstream in;
 
 	std::vector<Pair<T>> dotPosition;
 	std::vector<std::pair<std::string, T>> resultVector;
+
+	std::map<std::string, T> resMap;
 
 	// Loop throw all Tuples
 	for (auto curTuple : tuples)
@@ -47,14 +49,19 @@ inline std::vector<std::pair<std::string, T>> LocalPositionSolver<T>::CalculateL
 		std::pair<std::string, T> res;
 		res = std::make_pair(std::get<0>(curTuple), solverPtr_->FindInterpolationValue(TIn));
 		
-		std::cout << std::get<0>(curTuple) << " -> local: " << solverPtr_->FindInterpolationValue(TIn) << std::endl;
+		//std::cout << std::get<0>(curTuple) << " -> local: " << solverPtr_->FindInterpolationValue(TIn) << std::endl;
+
+		//resMap.at(std::get<0>(curTuple)) = solverPtr_->FindInterpolationValue(TIn);
+		resMap.insert(std::pair<std::string, T>(std::get<0>(curTuple), solverPtr_->FindInterpolationValue(TIn)));
 
 		resultVector.push_back(res);
 
 		// Clear pointer to apropriate solver
 		delete solverPtr_;
 	}
-	return resultVector;
+
+	return resMap;
+	//return resultVector;
 }
 
 template<typename T>

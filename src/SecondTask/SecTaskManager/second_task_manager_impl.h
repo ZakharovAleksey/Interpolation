@@ -7,16 +7,21 @@
 #include<iostream>
 #include <sstream>
 #include <iterator>
+#include "second_task_manager.h"
 
+#include<map>
 
 template<typename T>
 SecondTaskManager<T>::SecondTaskManager(const double TIn, std::string dotsFileName, std::string conditionsFileName) :
 	TIn_(TIn), dotsFileName_(dotsFileName), conditionsFileName_(conditionsFileName)
 {
 	localSoverPtr_ = new LocalPositionSolver<T>();
+	globalSolverPtr_ = new GlobalPositionSolver<T>();
+
 	std::ifstream in;
 
 	GetDotsDataFromFile(in);
+	GetConditionsFromFile(in);
 
 }
 
@@ -26,8 +31,10 @@ SecondTaskManager<T>::~SecondTaskManager() {}
 template<typename T>
 inline void SecondTaskManager<T>::CalculateLocalPositions()
 {
-	std::vector<std::pair<std::string, T>> res;
-	res = localSoverPtr_->CalculateLocalPositions(tuples_, TIn_);
+	std::map<std::string, T> localCoordinates;
+	localCoordinates = localSoverPtr_->CalculateLocalPositions(tuples_, TIn_);
+
+	globalSolverPtr_->CalculateGlobalPosition(localCoordinates, pairs_);
 }
 
 template<typename T>
@@ -79,8 +86,8 @@ inline void SecondTaskManager<T>::GetDotsDataFromFile(std::ifstream & in)
 				tuples_.push_back(curTuple);
 			}
 
-			for (auto i : tuples_)
-				std::cout << std::get<0>(i) << " ||| " << std::get<1>(i) << " |||| " << std::get<2>(i) << std::endl;
+			/*for (auto i : tuples_)
+				std::cout << std::get<0>(i) << " ||| " << std::get<1>(i) << " |||| " << std::get<2>(i) << std::endl;*/
 
 			in.close();
 		}
@@ -90,6 +97,56 @@ inline void SecondTaskManager<T>::GetDotsDataFromFile(std::ifstream & in)
 		in.close();
 
 		std::string exceptionMessage = "Could not open input file : " + dotsFileName_ + ".txt!\n";
+		throw exceptionMessage;
+	}
+}
+
+
+template<typename T>
+inline void SecondTaskManager<T>::GetConditionsFromFile(std::ifstream & in)
+{
+	in.open(conditionsFileName_ + ".txt");
+
+	if (in.is_open())
+	{
+		// Store number of dots and check it on correctness
+		in >> dotsNumber_;
+
+		if (dotsNumber_ <= 0)
+		{
+			in.close();
+
+			std::string exceptionMessage = "Invalid number of the points in" + conditionsFileName_ + ".txt file!\n";
+			throw exceptionMessage;
+		}
+		else
+		{
+			// Read '\n' symbol left after dotsNumber_ reading
+			in.get();
+
+			// Read file line by line and split each line on pairs donName->dotName
+			std::string curLine;
+			std::string const split = "->";
+
+			while (std::getline(in, curLine))
+			{
+				// Find spliting position
+				size_t id = curLine.find(split);
+				// Split line (-> length = 2 - thats why id + 2)
+				pairs_.push_back(std::make_pair(curLine.substr(0, id), curLine.substr(id + 2)));
+			}
+
+			/*for (auto i : pairs_)
+				std::cout << i.first << " + " << i.second << std::endl;*/
+
+			in.close();
+		}
+	}
+	else
+	{
+		in.close();
+
+		std::string exceptionMessage = "Could not open input file : " + conditionsFileName_ + ".txt!\n";
 		throw exceptionMessage;
 	}
 }

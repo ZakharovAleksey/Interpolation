@@ -14,7 +14,7 @@ int main()
 		//TaskManager<float> manager("a", "b", "c");
 		//manager.Solve();
 
-		SecondTaskManager<float> manager(1.4, "SecondTaskFiles/dots", "/SecondTaskFiles/conditions");
+		SecondTaskManager<float> manager(1.4, "SecondTaskFiles/dots", "SecondTaskFiles/conditions");
 		manager.CalculateLocalPositions();
 	}
 	catch (const std::exception& ex)

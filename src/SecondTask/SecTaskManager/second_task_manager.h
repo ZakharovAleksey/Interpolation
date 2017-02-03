@@ -4,6 +4,7 @@
 #define SECOND_TASK_MANAGER
 
 #include"../LocalPosSolver/local_pos_solver.h"
+#include"../GlobalPosSolver/global_pos_solver.h"
 
 #include<string>
 #include<vector>
@@ -42,6 +43,8 @@ private:
 	// Create vector of tuples ()
 	void GetDotsDataFromFile(std::ifstream & in);
 
+	void GetConditionsFromFile(std::ifstream & in);
+
 	// Time moment
 	double TIn_;
 
@@ -57,8 +60,11 @@ private:
 	// Tuple = (dotName(Id = 0), dotKeyPoints(Id = 1) interpolationOrder(Id = 2))
 	std::vector< Tuple > tuples_;
 
+	std::vector< std::pair<std::string, std::string>> pairs_;
 	// Pointer to local solver
 	LocalPositionSolver<T>* localSoverPtr_;
+	//Pointer to Global solver
+	GlobalPositionSolver<T>* globalSolverPtr_;
 
 };
 

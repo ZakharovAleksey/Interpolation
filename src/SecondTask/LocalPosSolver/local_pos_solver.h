@@ -10,6 +10,7 @@
 #include"../../FirstTask/Solver/Quadratic/quadratic_interpolation.h"
 #include"../../FirstTask/Solver/Qubic/qubic_interpolation.h"
 
+#include<map>
 
 // Class calculate local position of all dots
 template<typename T>
@@ -20,7 +21,7 @@ public:
 	~LocalPositionSolver();
 
 	// Calculate local position of all dots
-	std::vector<std::pair<std::string, T>> CalculateLocalPositions(std::vector<std::tuple<std::string, std::string, int>> & tuples, double TIn);
+	std::map<std::string, T> /*std::vector<std::pair<std::string, T>>*/ CalculateLocalPositions(std::vector<std::tuple<std::string, std::string, int>> & tuples, double TIn);
 
 	// Get all time evolution for a single dot according to it own data file
 	std::vector<Pair<T>> GetPairFromFile(std::ifstream & in, std::string const & fileName);
