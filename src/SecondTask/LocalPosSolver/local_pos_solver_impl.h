@@ -13,13 +13,15 @@ LocalPositionSolver<T>::~LocalPositionSolver() {}
 template<typename T>
 inline std::vector<std::pair<std::string, T>> LocalPositionSolver<T>::CalculateLocalPositions(std::vector<std::tuple<std::string, std::string, int>>& tuples, double TIn)
 {
-	std::cout << "Here\n";
 	std::ifstream in;
+
 	std::vector<Pair<T>> dotPosition;
 	std::vector<std::pair<std::string, T>> resultVector;
 
+	// Loop throw all Tuples
 	for (auto curTuple : tuples)
 	{
+		// Swich apropriate interpolation solver depending on dot interpolation order
 		switch (std::get<2>(curTuple))
 		{
 		case 1:
@@ -36,11 +38,12 @@ inline std::vector<std::pair<std::string, T>> LocalPositionSolver<T>::CalculateL
 			break;
 		}
 
+		// Load time evolution of current dot and build interpolation of apropriate order
 		dotPosition = GetPairFromFile(in, std::get<1>(curTuple));
 		solverPtr_->SetInutPairs(dotPosition);
 		solverPtr_->BuildInterpolation();
 
-
+		// Create a Pair = (dotName(Id = 0), localCoordinateAtChoosenTime (Id = 1))
 		std::pair<std::string, T> res;
 		res = std::make_pair(std::get<0>(curTuple), solverPtr_->FindInterpolationValue(TIn));
 		
@@ -48,10 +51,9 @@ inline std::vector<std::pair<std::string, T>> LocalPositionSolver<T>::CalculateL
 
 		resultVector.push_back(res);
 
+		// Clear pointer to apropriate solver
 		delete solverPtr_;
-
 	}
-
 	return resultVector;
 }
 

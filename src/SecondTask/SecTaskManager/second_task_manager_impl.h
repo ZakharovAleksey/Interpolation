@@ -37,8 +37,9 @@ inline void SecondTaskManager<T>::GetDotsDataFromFile(std::ifstream & in)
 
 	if (in.is_open())
 	{
-
+		// Store number of dots and check it on correctness
 		in >> dotsNumber_;
+
 		if (dotsNumber_ <= 0)
 		{
 			in.close();
@@ -48,7 +49,7 @@ inline void SecondTaskManager<T>::GetDotsDataFromFile(std::ifstream & in)
 		}
 		else
 		{
-			// Read '\n' symbol
+			// Read '\n' symbol left after dotsNumber_ reading
 			in.get();
 
 			Tuple curTuple;
@@ -63,32 +64,24 @@ inline void SecondTaskManager<T>::GetDotsDataFromFile(std::ifstream & in)
 
 				std::vector<std::string> parts(beg, end);
 
-				// Create a Triplet
-
+				// Obtain interpolation order depending on last word in line
 				int order = -1;
-
 				if (parts.at(2) == "linear")
-				{
 					order = 1;
-				}
 				else if (parts.at(2) == "quadratic")
-				{
 					order = 2;
-				}
 				else if (parts.at(2) == "qubic")
-				{
 					order = 3;
-				}
 
+				// Make Tuple = (dotName(Id = 0), dotKeyPoints(Id = 1) interpolationOrder(Id = 2))
 				curTuple = std::make_tuple(parts.at(0), parts.at(1), order);
 
 				tuples_.push_back(curTuple);
 			}
 
 			for (auto i : tuples_)
-			{
 				std::cout << std::get<0>(i) << " ||| " << std::get<1>(i) << " |||| " << std::get<2>(i) << std::endl;
-			}
+
 			in.close();
 		}
 	}
