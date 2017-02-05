@@ -7,12 +7,13 @@
 
 #include<vector>
 
+// Quadratic interpolaation solver
 template<typename T>
 class QuadraticInterpolationSolver : public InterpolationSolver<T>
 {
 public:
 
-	// Structure wich store information about current spline interval
+	// Structure which store information about current spline interval
 	// Equation: y = ax^2 + bx + c
 	template<typename T1>
 	struct QuadraticTuple

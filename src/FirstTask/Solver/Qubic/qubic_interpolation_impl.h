@@ -70,10 +70,9 @@ void QubicInterpolationSolver<T>::BuildInterpolation()
 template<typename T>
 T QubicInterpolationSolver<T>::FindInterpolationValue(T const x)
 {
-	// BAD SEARCH!!! MAKE BINNARY SEARCH
 	for (auto i : spline_)
 	{
-		// If current x is belongs to one of intervals
+		// If the current x is belongs to one of intervals return interpolation value
 		if (i.leftBoundary <= x && i.rightBoundary >= x)
 		{
 			double dx = x - i.leftBoundary;

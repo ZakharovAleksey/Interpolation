@@ -1,0 +1,10 @@
+9
+A A.txt linear
+B B.txt quadratic
+C C.txt qubic
+D D.txt linear
+E E.txt linear
+F F.txt qubic
+G G.txt quadratic
+K K.txt linear
+M M.txt quadratic

@@ -26,19 +26,6 @@ inline void InterpolationSolver<T>::SetOutputPoints(const std::vector<T>& output
 }
 
 template<typename T>
-inline void InterpolationSolver<T>::DisplayInputData() const
-{
-	std::cout << "Input pairs: \n";
-	for (auto curPair : inputPairs_)
-		std::cout << curPair.arg << " " << curPair.value << std::endl;
-
-	std::cout << "Output points: \n";
-	for (auto curPoint : dotsForInterpolation_)
-		std::cout << curPoint << std::endl;
-}
-
-
-template<typename T>
 void InterpolationSolver<T>::BuildInterpolation() { }
 
 template<typename T>

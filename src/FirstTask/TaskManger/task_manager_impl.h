@@ -20,19 +20,17 @@ enum class InterpolationType
 template<typename T>
 TaskManager<T>::TaskManager(std::string fileName1, std::string fileName2, std::string outFileName) : fileName1_(fileName1), fileName2_(fileName2), outFileName_(outFileName)
 {
+	std::cout << "\nFIRST TASK EXCECUTION STARTED!\n\n";
+
 	ChooseInterpolationType();
 
 	pointNumber1_ = -1;
 	pointNumber2_ = -1;
 
 	std::ifstream in;
-	std::cout << "The data is loading...\n";
 
 	GetDataFromFile(in, 1, fileName1_);
 	GetDataFromFile(in, 2, fileName2_);
-
-	std::cout << "The data is ready for interpolation procedure.\n";
-	//solverPtr_->DisplayInputData();
 }
 
 template<typename T>
@@ -44,7 +42,7 @@ inline void TaskManager<T>::Solve()
 	solverPtr_->BuildInterpolation();
 	std::vector<Pair<T>> result = solverPtr_->FindAllInterpolationValues();
 
-	std::cout << "Ñalculation finished successfully!\n";
+	std::cout << "Calculation finished successfully!\n";
 
 	WriteResultToFile(result);
 }

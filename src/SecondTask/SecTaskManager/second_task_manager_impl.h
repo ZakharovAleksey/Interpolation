@@ -15,6 +15,8 @@ template<typename T>
 SecondTaskManager<T>::SecondTaskManager(const double TIn, const std::string dotsFileName, const std::string conditionsFileName) :
 	TIn_(TIn), dotsFileName_(dotsFileName), conditionsFileName_(conditionsFileName)
 {
+	std::cout << "\nSECOND TASK EXCECUTION STARTED!\n\n";
+
 	localSoverPtr_ = std::unique_ptr<LocalPositionSolver<T>>(new LocalPositionSolver<T>);
 	globalSolverPtr_ = std::unique_ptr<GlobalPositionSolver<T>>(new GlobalPositionSolver<T>);
 
@@ -31,7 +33,6 @@ SecondTaskManager<T>::~SecondTaskManager() {}
 template<typename T>
 inline void SecondTaskManager<T>::CalculateGlobalPositions() 
 {
-	std::cout << "Calculation of global coordinates launched...\n";
 	// Calculate local positions of all dots
 	std::map<std::string, T> localPositions;
 	localPositions = localSoverPtr_->CalculateLocalPositions(tuples_, TIn_);
@@ -40,18 +41,17 @@ inline void SecondTaskManager<T>::CalculateGlobalPositions()
 	std::map<std::string, T> globalPositions;
 	globalPositions = globalSolverPtr_->CalculateGlobalPosition(localPositions, pairs_);
 
-	for (auto i : globalPositions)
-		std::cout << i.first << " -> " << i.second << std::endl;
-
 	// Write global positions of all dots in file
 	WriteGlobalPositionToFile(globalPositions);
 	std::cout << "Calculation of the global coordinate successfully completed\n";
+
+	for (auto i : globalPositions)
+		std::cout << i.first << " -> " << i.second << std::endl;
 }
 
 template<typename T>
 inline void SecondTaskManager<T>::GetDotsDataFromFile(std::ifstream & in)
 {
-	std::cout << "Uploading data from first input file... \n";
 	in.open(dotsFileName_ + ".txt");
 
 	if (in.is_open())
@@ -100,7 +100,6 @@ inline void SecondTaskManager<T>::GetDotsDataFromFile(std::ifstream & in)
 			}
 
 			in.close();
-			std::cout << "Uploading the is was successful!\n";
 		}
 	}
 	else
@@ -116,7 +115,6 @@ inline void SecondTaskManager<T>::GetDotsDataFromFile(std::ifstream & in)
 template<typename T>
 inline void SecondTaskManager<T>::GetConditionsFromFile(std::ifstream & in)
 {
-	std::cout << "Uploading data from second input file... \n";
 	in.open(conditionsFileName_ + ".txt");
 
 	if (in.is_open())
@@ -150,7 +148,6 @@ inline void SecondTaskManager<T>::GetConditionsFromFile(std::ifstream & in)
 			}
 
 			in.close();
-			std::cout << "Uploading the is was successful!\n";
 		}
 	}
 	else

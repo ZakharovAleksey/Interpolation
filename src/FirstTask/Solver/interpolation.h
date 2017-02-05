@@ -7,9 +7,9 @@
 
 #include<vector>
 
-// Structure wich store pair:
-// - agr (argument or x-coordinate of the point)
-// - value (value or y = f(x) of this point)
+// Structure which store pair:
+// - agr (argument or x-coordinate of the dot)
+// - value (value or y = f(x) of this dot)
 template<typename T>
 struct Pair
 {
@@ -17,7 +17,6 @@ struct Pair
 	T value;
 
 	Pair() : arg(T()), value(T()) { }
-
 	Pair(T point, T value) : arg(point), value(value) { }
 };
 
@@ -29,7 +28,7 @@ bool PairComparator(const Pair<T> & left, const Pair<T> & right)
 }
 
 
-// Parent for all InterpolationSolver classes
+// Parent for all Interpolation Solver classes
 template<typename T>
 class InterpolationSolver : public iInterpolation<T>
 {
@@ -37,19 +36,14 @@ public:
 	InterpolationSolver();
 	virtual ~InterpolationSolver();
 
-	// Set pairs from manager : Pair = ( x(Id = 0), y=f(x) (Id = 2))
+	// Get pairs from manager : Pair = ( x(Id = 0), y=f(x) (Id = 2))
 	void SetInutPairs(const std::vector<Pair<T>> & inputPairs);
 
-	// Set dots for further interpolation from second input file
+	// Get dots for further interpolation from manager
 	void SetOutputPoints(const std::vector<T> & outputPoints);
-
-
-	void DisplayInputData() const;
-
+	
 	void BuildInterpolation() override;
-
 	std::vector<Pair<T>> FindAllInterpolationValues() override;
-
 	T FindInterpolationValue(T const x) override;
 
 protected:

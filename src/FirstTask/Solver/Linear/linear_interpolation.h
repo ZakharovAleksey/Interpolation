@@ -13,7 +13,7 @@ class LinearInterpolationSolver : public InterpolationSolver<T>
 {
 public:
 
-	// Structure wich store information about current spline interval
+	// Structure which store information about current spline interval
 	// Equation: y = ax + b
 	template<typename T1>
 	struct LinearTuple

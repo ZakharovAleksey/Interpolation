@@ -1,8 +1,7 @@
 #include <iostream>
 #include<exception>
 
-#include"FirstTask\TaskManger\task_manager.h"
-#include"SecondTask\SecTaskManager\second_task_manager.h"
+#include"MainManager\main_manager.h"
 
 int main()
 {
@@ -11,11 +10,8 @@ int main()
 
 	try
 	{
-		TaskManager<float> manager("a", "b", "c");
-		manager.Solve();
-
-		//SecondTaskManager<float> manager(1.4, "SecondTaskFiles/dots", "SecondTaskFiles/conditions");
-		//manager.CalculateGlobalPositions();
+		MainManager<double> mal;
+		mal.TaskLoopExecution();
 	}
 	catch (const std::exception& ex)
 	{

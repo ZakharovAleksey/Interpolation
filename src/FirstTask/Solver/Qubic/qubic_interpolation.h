@@ -7,12 +7,13 @@
 
 #include<vector>
 
+// // Qubic interpolaation solver
 template<typename T>
 class QubicInterpolationSolver : public InterpolationSolver<T>
 {
 public:
 
-	// Structure wich store information about current spline interval
+	// Structure which store information about current spline interval
 	// Equation: y = a + b (x - x0) + c (x - x0)^2 + d (x - x0)^3
 	template<typename T1>
 	struct QubicTuple

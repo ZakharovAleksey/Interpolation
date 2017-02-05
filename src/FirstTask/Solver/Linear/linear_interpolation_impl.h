@@ -15,7 +15,7 @@ void LinearInterpolationSolver<T>::BuildInterpolation()
 
 	for (int i = 0; i < inputPairs_.size() - 1; ++i)
 	{
-		// Find a and b coefs
+		// Find a-coef and b-coef
 		curTuple.a = (inputPairs_.at(i + 1).value - inputPairs_.at(i).value) / (inputPairs_.at(i + 1).arg - inputPairs_.at(i).arg);
 		curTuple.b = inputPairs_.at(i).value - curTuple.a * inputPairs_.at(i).arg;
 
@@ -31,17 +31,16 @@ void LinearInterpolationSolver<T>::BuildInterpolation()
 template<typename T>
 T LinearInterpolationSolver<T>::FindInterpolationValue(T const x) 
 {
-	// BAD SEARCH!!! MAKE BINNARY SEARCH
 	for (auto i : spline_)
 	{
-		// If current x is belongs to one of intervals
+		// If the current x is belongs to one of intervals return interpolation value
 		if (i.leftBoundary <= x && i.rightBoundary >= x)
 		{
 			return i.a * x + i.b;
 		}
 	}
 
-	std::cout << "X = " << x << " is not in interval\n";
+	std::cout << " X = " << x << " is not in interval! \n";
 
 	return T(); 
 }

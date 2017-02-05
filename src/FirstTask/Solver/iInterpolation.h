@@ -8,7 +8,7 @@
 template<typename T>
 struct Pair;
 
-// Interface for Interpolation class
+// Interface for Interpolation Solvers
 template<typename T>
 class iInterpolation
 {
@@ -18,9 +18,9 @@ public:
 	// Calculate interpolation spline
 	virtual void BuildInterpolation() = 0;
 
-	// Calculate ALL valuee (y) for ALL apropriate argument values (x) according to interpolation spline
+	// Calculate ALL value (y) for ALL appropriate argument values (x) according to interpolation spline
 	virtual std::vector<Pair<T>> FindAllInterpolationValues() = 0;
-	// Calculate value (y) for apropriate argument value (x) according to interpolation spline
+	// Calculate value (y) for an appropriate argument value (x) according to interpolation spline
 	virtual T FindInterpolationValue( T const x ) = 0;
 
 };

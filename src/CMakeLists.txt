@@ -25,6 +25,8 @@ set(
 	"SecondTask/LocalPosSolver/local_pos_solver_impl.h"
 	"SecondTask/SecTaskManager/second_task_manager.h"
 	"SecondTask/SecTaskManager/second_task_manager_impl.h"
+	"MainManager/main_manager.h"
+	"MainManager/main_manager_impl.h"
 	"main.cpp"
 )
 

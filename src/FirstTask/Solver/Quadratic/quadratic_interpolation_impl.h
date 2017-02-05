@@ -13,6 +13,7 @@ void QuadraticInterpolationSolver<T>::BuildInterpolation()
 
 	for (int i = 1; i < inputPairs_.size() - 1; i+=2)
 	{
+		// Obtain a-coef, b-coef, c-coef
 		curTuple.a =
 			(inputPairs_.at(i + 1).value - inputPairs_.at(i - 1).value) /
 			(inputPairs_.at(i + 1).arg - inputPairs_.at(i - 1).arg) /
@@ -44,17 +45,16 @@ void QuadraticInterpolationSolver<T>::BuildInterpolation()
 template<typename T>
 T QuadraticInterpolationSolver<T>::FindInterpolationValue(T const x)
 {
-	// BAD SEARCH!!! MAKE BINNARY SEARCH
 	for (auto i : spline_)
 	{
-		// If current x is belongs to one of intervals
+		// If the current x is belongs to one of intervals return interpolation value
 		if (i.leftBoundary <= x && i.rightBoundary >= x)
 		{
 			return i.a * x * x + i.b * x + i.c;
 		}
 	}
 
-	std::cout << "X = " << x << " is not in interval\n";
+	std::cout << " X = " << x << " is not in interval!\n";
 
 	return T();
 }

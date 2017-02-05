@@ -38,11 +38,11 @@ inline std::map<std::string, T> GlobalPositionSolver<T>::CalculateGlobalPosition
 	// Loop until all conditions are used
 	while (!leftCondition.empty())
 	{
-		// Dots name wich we did not find in right side of the conditions
+		// Dots name which we did not find in right side of the conditions
 		std::vector<std::string> notFoundDots;
 		for (auto dotName : dotsName)
 		{
-			// Look throw the right part of conditions
+			// Look via the right part of conditions
 			if (std::find(rightCondition.begin(), rightCondition.end(), dotName) == rightCondition.end())
 				notFoundDots.push_back(dotName);
 		}
@@ -51,18 +51,18 @@ inline std::map<std::string, T> GlobalPositionSolver<T>::CalculateGlobalPosition
 		{
 			for (int i = 0; i < leftCondition.size();)
 			{
-				// Update global position of right dot dependion on the left dot global position
+				// Update global position of right dot depending on the left dot global position
 				if (leftCondition.at(i) == notFoundDot)
 				{
 					globalPosition.at(rightCondition.at(i)) += globalPosition.at(leftCondition.at(i));
-					// Remove used condition
+					//  Remove conditions which has been used
 					leftCondition.erase(leftCondition.begin() + i);
 					rightCondition.erase(rightCondition.begin() + i);
 				}
 				else
 					++i;
 			}
-			// Remove used dots
+			// Remove dots which has been used
 			dotsName.erase(std::find(dotsName.begin(), dotsName.end(), notFoundDot));
 		}
 
