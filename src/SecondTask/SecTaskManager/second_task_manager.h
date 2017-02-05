@@ -6,9 +6,9 @@
 #include"../LocalPosSolver/local_pos_solver.h"
 #include"../GlobalPosSolver/global_pos_solver.h"
 
+#include<memory>
 #include<string>
 #include<vector>
-
 #include<tuple>
 
 
@@ -29,43 +29,46 @@ template<typename T>
 class SecondTaskManager
 {
 public:
-	// Поэксперименитровать с const и & в конструкторе
-	SecondTaskManager(const double T, std::string dotsFileName, std::string conditionsFileName);
+	SecondTaskManager(const double T, const std::string dotsFileName, const std::string conditionsFileName);
 	~SecondTaskManager();
 
-	// Calculate local coordinates for all dots 
-	// Tuple = (dotName(Id = 0), dotKeyPoints(Id = 1) interpolationOrder(Id = 2))
-	void CalculateLocalPositions();
-
+	// Calculate Global positions of all dots
+	void CalculateGlobalPositions();
 
 private:
-
-	// Create vector of tuples ()
+	// Get all data about each dot from first input file
 	void GetDotsDataFromFile(std::ifstream & in);
 
+	// Get all dots conditions from second input file
 	void GetConditionsFromFile(std::ifstream & in);
+
+	// Write calculated global positions of all dots in file
+	void WriteGlobalPositionToFile(const std::map<std::string, T> & globalPositions) const;
+
 
 	// Time moment
 	double TIn_;
 
 	// First input file data
 	std::string dotsFileName_;
-	long int dotsNumber_;
 
 	// Second input file data
 	std::string conditionsFileName_;
-	long int conditionsNumber_;
 
 	// Store tuples from first file: 
 	// Tuple = (dotName(Id = 0), dotKeyPoints(Id = 1) interpolationOrder(Id = 2))
-	std::vector< Tuple > tuples_;
+	std::vector<Tuple> tuples_;
 
-	std::vector< std::pair<std::string, std::string>> pairs_;
+	// Store condition pair from second input file:
+	// Pair = (leftDot(Id = 0), RightDot(Id = 1))
+	typedef std::pair<std::string, std::string> PointsNamePair;
+	std::vector<PointsNamePair> pairs_;
+	
 	// Pointer to local solver
-	LocalPositionSolver<T>* localSoverPtr_;
-	//Pointer to Global solver
-	GlobalPositionSolver<T>* globalSolverPtr_;
+	std::unique_ptr<LocalPositionSolver<T>> localSoverPtr_;
 
+	//Pointer to global solver
+	std::unique_ptr<GlobalPositionSolver<T>> globalSolverPtr_;
 };
 
 #include"second_task_manager_impl.h"

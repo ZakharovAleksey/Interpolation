@@ -11,70 +11,56 @@ template<typename T>
 LocalPositionSolver<T>::~LocalPositionSolver() {}
 
 template<typename T>
-inline std::map<std::string, T> /*std::vector<std::pair<std::string, T>>*/ LocalPositionSolver<T>::CalculateLocalPositions(std::vector<std::tuple<std::string, std::string, int>>& tuples, double TIn)
+inline std::map<std::string, T> LocalPositionSolver<T>::CalculateLocalPositions(const std::vector<Tuple>& tuples, const double TIn)
 {
 	std::ifstream in;
 
 	std::vector<Pair<T>> dotPosition;
-	std::vector<std::pair<std::string, T>> resultVector;
+	// Store pair: dot name and it's local position
+	std::map<std::string, T> dotPosMap;
 
-	std::map<std::string, T> resMap;
-
-	// Loop throw all Tuples
+	// Loop by all tuples
 	for (auto curTuple : tuples)
 	{
-		// Swich apropriate interpolation solver depending on dot interpolation order
+		// Choose apropriate interpolation solver depending on dot interpolation order
 		switch (std::get<2>(curTuple))
 		{
 		case 1:
-			solverPtr_ = new LinearInterpolationSolver<T>();
+			solverPtr_ = std::unique_ptr<LinearInterpolationSolver<T>>(new LinearInterpolationSolver<T>);
 			break;
 		case 2:
-			solverPtr_ = new QuadraticInterpolationSolver<T>();
+			solverPtr_ = std::unique_ptr<QuadraticInterpolationSolver<T>>(new QuadraticInterpolationSolver<T>);
 			break;
 		case 3:
-			solverPtr_ = new QubicInterpolationSolver<T>();
+			solverPtr_ = std::unique_ptr<QubicInterpolationSolver<T>>(new QubicInterpolationSolver<T>);
 			break;
 		default:
 			std::cout << "Error! Wrong input interpolation order! Could not create apropriate solver!\n";
 			break;
 		}
 
-		// Load time evolution of current dot and build interpolation of apropriate order
-		dotPosition = GetPairFromFile(in, std::get<1>(curTuple));
+		// Load time evolution of current dot form apropriate file
+		// and build interpolation of choosen order
+		dotPosition = GetDotTimeEvolution(in, std::get<1>(curTuple));
 		solverPtr_->SetInutPairs(dotPosition);
 		solverPtr_->BuildInterpolation();
 
-		// Create a Pair = (dotName(Id = 0), localCoordinateAtChoosenTime (Id = 1))
-		std::pair<std::string, T> res;
-		res = std::make_pair(std::get<0>(curTuple), solverPtr_->FindInterpolationValue(TIn));
-		
-		//std::cout << std::get<0>(curTuple) << " -> local: " << solverPtr_->FindInterpolationValue(TIn) << std::endl;
-
-		//resMap.at(std::get<0>(curTuple)) = solverPtr_->FindInterpolationValue(TIn);
-		resMap.insert(std::pair<std::string, T>(std::get<0>(curTuple), solverPtr_->FindInterpolationValue(TIn)));
-
-		resultVector.push_back(res);
-
-		// Clear pointer to apropriate solver
-		delete solverPtr_;
+		dotPosMap.insert(std::pair<std::string, T>(std::get<0>(curTuple), solverPtr_->FindInterpolationValue(TIn)));
 	}
 
-	return resMap;
-	//return resultVector;
+	return dotPosMap;
 }
 
 template<typename T>
-inline std::vector<Pair<T>> LocalPositionSolver<T>::GetPairFromFile(std::ifstream & in, std::string const & fileName)
+inline std::vector<Pair<T>> LocalPositionSolver<T>::GetDotTimeEvolution(std::ifstream & in, std::string const & fileName)
 {
 	in.open("SecondTaskFiles/" + fileName);
 	
-	int dotsNumber;
-	
 	if (in.is_open())
 	{
+		
 		// Read number of points in the file
-		in >> dotsNumber;
+		int dotsNumber; in >> dotsNumber;
 	
 		// Check on the correct input size
 		if (dotsNumber <= 0)

@@ -11,7 +11,6 @@ void QuadraticInterpolationSolver<T>::BuildInterpolation()
 {
 	QuadraticTuple<T> curTuple;
 
-	// ИДЕМ ЧЕРЕЗ две точки - надо подумать как сказать о том когда недостаточно точек для полного завершения квадратичной интерполяции
 	for (int i = 1; i < inputPairs_.size() - 1; i+=2)
 	{
 		curTuple.a =

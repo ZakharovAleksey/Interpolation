@@ -12,11 +12,11 @@
 #include<map>
 
 template<typename T>
-SecondTaskManager<T>::SecondTaskManager(const double TIn, std::string dotsFileName, std::string conditionsFileName) :
+SecondTaskManager<T>::SecondTaskManager(const double TIn, const std::string dotsFileName, const std::string conditionsFileName) :
 	TIn_(TIn), dotsFileName_(dotsFileName), conditionsFileName_(conditionsFileName)
 {
-	localSoverPtr_ = new LocalPositionSolver<T>();
-	globalSolverPtr_ = new GlobalPositionSolver<T>();
+	localSoverPtr_ = std::unique_ptr<LocalPositionSolver<T>>(new LocalPositionSolver<T>);
+	globalSolverPtr_ = std::unique_ptr<GlobalPositionSolver<T>>(new GlobalPositionSolver<T>);
 
 	std::ifstream in;
 
@@ -29,25 +29,38 @@ template<typename T>
 SecondTaskManager<T>::~SecondTaskManager() {}
 
 template<typename T>
-inline void SecondTaskManager<T>::CalculateLocalPositions()
+inline void SecondTaskManager<T>::CalculateGlobalPositions() 
 {
-	std::map<std::string, T> localCoordinates;
-	localCoordinates = localSoverPtr_->CalculateLocalPositions(tuples_, TIn_);
+	std::cout << "Calculation of global coordinates launched...\n";
+	// Calculate local positions of all dots
+	std::map<std::string, T> localPositions;
+	localPositions = localSoverPtr_->CalculateLocalPositions(tuples_, TIn_);
 
-	globalSolverPtr_->CalculateGlobalPosition(localCoordinates, pairs_);
+	// Calculate global positions of all dots
+	std::map<std::string, T> globalPositions;
+	globalPositions = globalSolverPtr_->CalculateGlobalPosition(localPositions, pairs_);
+
+	for (auto i : globalPositions)
+		std::cout << i.first << " -> " << i.second << std::endl;
+
+	// Write global positions of all dots in file
+	WriteGlobalPositionToFile(globalPositions);
+	std::cout << "Calculation of the global coordinate successfully completed\n";
 }
 
 template<typename T>
 inline void SecondTaskManager<T>::GetDotsDataFromFile(std::ifstream & in)
 {
+	std::cout << "Uploading data from first input file... \n";
 	in.open(dotsFileName_ + ".txt");
 
 	if (in.is_open())
 	{
+		long int dotsNumber;
 		// Store number of dots and check it on correctness
-		in >> dotsNumber_;
+		in >> dotsNumber;
 
-		if (dotsNumber_ <= 0)
+		if (dotsNumber <= 0)
 		{
 			in.close();
 
@@ -86,10 +99,8 @@ inline void SecondTaskManager<T>::GetDotsDataFromFile(std::ifstream & in)
 				tuples_.push_back(curTuple);
 			}
 
-			/*for (auto i : tuples_)
-				std::cout << std::get<0>(i) << " ||| " << std::get<1>(i) << " |||| " << std::get<2>(i) << std::endl;*/
-
 			in.close();
+			std::cout << "Uploading the is was successful!\n";
 		}
 	}
 	else
@@ -105,18 +116,20 @@ inline void SecondTaskManager<T>::GetDotsDataFromFile(std::ifstream & in)
 template<typename T>
 inline void SecondTaskManager<T>::GetConditionsFromFile(std::ifstream & in)
 {
+	std::cout << "Uploading data from second input file... \n";
 	in.open(conditionsFileName_ + ".txt");
 
 	if (in.is_open())
 	{
+		long int conditionsNumber;
 		// Store number of dots and check it on correctness
-		in >> dotsNumber_;
+		in >> conditionsNumber;
 
-		if (dotsNumber_ <= 0)
+		if (conditionsNumber <= 0)
 		{
 			in.close();
 
-			std::string exceptionMessage = "Invalid number of the points in" + conditionsFileName_ + ".txt file!\n";
+			std::string exceptionMessage = "Invalid number of conditions in" + conditionsFileName_ + ".txt file!\n";
 			throw exceptionMessage;
 		}
 		else
@@ -136,10 +149,8 @@ inline void SecondTaskManager<T>::GetConditionsFromFile(std::ifstream & in)
 				pairs_.push_back(std::make_pair(curLine.substr(0, id), curLine.substr(id + 2)));
 			}
 
-			/*for (auto i : pairs_)
-				std::cout << i.first << " + " << i.second << std::endl;*/
-
 			in.close();
+			std::cout << "Uploading the is was successful!\n";
 		}
 	}
 	else
@@ -147,6 +158,30 @@ inline void SecondTaskManager<T>::GetConditionsFromFile(std::ifstream & in)
 		in.close();
 
 		std::string exceptionMessage = "Could not open input file : " + conditionsFileName_ + ".txt!\n";
+		throw exceptionMessage;
+	}
+}
+
+template<typename T>
+inline void SecondTaskManager<T>::WriteGlobalPositionToFile(const std::map<std::string, T>& globalPositions) const
+{
+	std::ofstream out;
+	out.open("SecondTaskFiles/globalPositions.txt");
+
+	if (out.is_open())
+	{
+		out << globalPositions.size() << std::endl;
+
+		for (auto pair : globalPositions)
+			out << pair.first << " " << pair.second << std::endl;
+
+		out.close();
+	}
+	else
+	{
+		out.close();
+
+		std::string exceptionMessage = "Could not open input file : globalPositions.txt!\n";
 		throw exceptionMessage;
 	}
 }

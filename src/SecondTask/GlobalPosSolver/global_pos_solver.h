@@ -7,6 +7,8 @@
 #include<string>
 #include<map>
 
+// Class calculate global position of all dots
+// depending on the local positions and their conditions
 template<typename T>
 class GlobalPositionSolver
 {
@@ -17,12 +19,7 @@ public:
 	GlobalPositionSolver();
 	~GlobalPositionSolver();
 
-	void CalculateGlobalPosition(std::map<std::string, T> localPosition, std::vector<CondPair> conditions);
-
-private:
-
-	std::vector<PosPair> localPosition_;
-	std::vector<CondPair> conditions_;
+	std::map<std::string, T> CalculateGlobalPosition(const std::map<std::string, T> & localPosition, const std::vector<CondPair> & conditions) const;
 };
 
 

@@ -7,110 +7,69 @@
 #include <algorithm>
 
 template<typename T>
-GlobalPositionSolver<T>::GlobalPositionSolver()
-{}
+GlobalPositionSolver<T>::GlobalPositionSolver() {}
 
 template<typename T>
 GlobalPositionSolver<T>::~GlobalPositionSolver() {}
 
 template<typename T>
-inline void GlobalPositionSolver<T>::CalculateGlobalPosition(std::map<std::string, T> localPosition, std::vector<CondPair> conditions)
+inline std::map<std::string, T> GlobalPositionSolver<T>::CalculateGlobalPosition( const std::map<std::string, T> & localPosition, const std::vector<CondPair> & conditions) const
 {
-	//>>>>>>>>>>>>
-	std::cout << "Hello\n";
-
-	std::cout << "Local coordinates:\n";
-	for (auto i : localPosition)
-		std::cout << i.first << " -> " << i.second << std::endl;
-
-	std::cout << "Conditions:\n";
-	for (auto i : conditions)
-		std::cout << i.first << " --- " << i.second << std::endl;
-
-	//>>>>>>>>>>>
-
+	// Stores global position of all dots
 	std::map<std::string, T> globalPosition = localPosition;
 
+	// Stores dots names
 	std::vector<std::string> dotsName;
-
 	for (auto i : localPosition)
 		dotsName.push_back(i.first);
 
-	
+	// Stores dots names in left and right parts of 
+	// conditions. In file: leftCondition -> rightCondition (A->B)
 	std::vector<std::string> leftCondition;
 	std::vector<std::string> rightCondition;
 
-	// Write conditions to vector
+	// Fill conditions
 	for (auto i : conditions)
 	{
 		leftCondition.push_back(i.first);
 		rightCondition.push_back(i.second);
 	}
 
+	// Loop until all conditions are used
 	while (!leftCondition.empty())
 	{
-
-
-
-		// Имена точке, которые мы не нашли в правой стороне (то есть у них нет зависимостей)
+		// Dots name wich we did not find in right side of the conditions
 		std::vector<std::string> notFoundDots;
-
-		// Тут мы составляем массив из тех точке которые не встретились в правой части
 		for (auto dotName : dotsName)
 		{
+			// Look throw the right part of conditions
 			if (std::find(rightCondition.begin(), rightCondition.end(), dotName) == rightCondition.end())
-			{
 				notFoundDots.push_back(dotName);
-			}
 		}
-
-		std::cout << "Not found: \n";
-		for (auto i : notFoundDots)
-			std::cout << i << " ";
-		std::cout << std::endl;
-
-		std::cout << "Global position: \n";
-		for (auto i : globalPosition)
-			std::cout << i.first << " |-> " << i.second << std::endl;
 
 		for (auto notFoundDot : notFoundDots)
 		{
 			for (int i = 0; i < leftCondition.size();)
 			{
+				// Update global position of right dot dependion on the left dot global position
 				if (leftCondition.at(i) == notFoundDot)
 				{
 					globalPosition.at(rightCondition.at(i)) += globalPosition.at(leftCondition.at(i));
+					// Remove used condition
 					leftCondition.erase(leftCondition.begin() + i);
 					rightCondition.erase(rightCondition.begin() + i);
 				}
 				else
 					++i;
 			}
+			// Remove used dots
 			dotsName.erase(std::find(dotsName.begin(), dotsName.end(), notFoundDot));
 		}
+
 		notFoundDots.clear();
-
-		std::cout << "AFTER\n";
-		std::cout << "New Conditions:\n";
-		for (int i = 0; i < leftCondition.size(); ++i)
-		{
-			std::cout << leftCondition.at(i) << " - >" << rightCondition.at(i) << std::endl;
-		}
-
-		std::cout << "Now dot left: ";
-		for (auto i : dotsName)
-			std::cout << i << " ";
-		std::cout << std::endl;
-
-		std::cout << "Global position: \n";
-		for (auto i : globalPosition)
-			std::cout << i.first << " |-> " << i.second << std::endl;
-
-
 	}
-	// Смотрим те вершины что не встерчаются в правой колонке, и потом обновляем все значения
 
-
+	return globalPosition;
 }
 
 

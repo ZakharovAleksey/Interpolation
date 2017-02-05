@@ -7,6 +7,7 @@
 
 #include<vector>
 
+// Linear interpolaation solver
 template<typename T>
 class LinearInterpolationSolver : public InterpolationSolver<T>
 {
@@ -34,7 +35,6 @@ public:
 	T FindInterpolationValue(T const x) override;
 
 private:
-
 	std::vector<LinearTuple<T>> spline_;
 };
 
