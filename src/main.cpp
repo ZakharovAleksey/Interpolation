@@ -5,9 +5,6 @@
 
 int main()
 {
-	using std::cout;
-	using std::endl;
-
 	try
 	{
 		MainManager<double> mal;
