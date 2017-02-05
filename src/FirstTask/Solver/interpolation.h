@@ -37,8 +37,12 @@ public:
 	InterpolationSolver();
 	virtual ~InterpolationSolver();
 
+	// Set pairs from manager : Pair = ( x(Id = 0), y=f(x) (Id = 2))
 	void SetInutPairs(const std::vector<Pair<T>> & inputPairs);
+
+	// Set dots for further interpolation from second input file
 	void SetOutputPoints(const std::vector<T> & outputPoints);
+
 
 	void DisplayInputData() const;
 
@@ -49,8 +53,10 @@ public:
 	T FindInterpolationValue(T const x) override;
 
 protected:
+	// Store pairs from first input file
 	std::vector<Pair<T>>  inputPairs_;
-	std::vector<T>  outputPoints_;
+	// Store dots for interpolation from second input file
+	std::vector<T>  dotsForInterpolation_;
 };
 
 

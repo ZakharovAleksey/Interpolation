@@ -49,6 +49,7 @@ inline void TaskManager<T>::Solve()
 	WriteResultToFile(result);
 }
 
+
 template<typename T>
 inline void TaskManager<T>::ChooseInterpolationType()
 {
@@ -77,7 +78,23 @@ inline void TaskManager<T>::ChooseInterpolationType()
 			continue;
 		}
 
+
 		switch (interpolOrder)
+		{
+		case 1:
+			solverPtr_ = std::unique_ptr<LinearInterpolationSolver<T>>(new LinearInterpolationSolver<T>);
+			break;
+		case 2:
+			solverPtr_ = std::unique_ptr<QuadraticInterpolationSolver<T>>(new QuadraticInterpolationSolver<T>);
+			break;
+		case 3:
+			solverPtr_ = std::unique_ptr<QubicInterpolationSolver<T>>(new QubicInterpolationSolver<T>);
+			break;
+		default:
+			std::cout << "Error! Wrong input interpolation order! Could not create apropriate solver!\n";
+			break;
+		}
+		/*switch (interpolOrder)
 		{
 		case int(InterpolationType::Linear) :
 			solverPtr_ = new LinearInterpolationSolver<T>();
@@ -94,7 +111,7 @@ inline void TaskManager<T>::ChooseInterpolationType()
 		default:
 			std::cout << "Wrong input! Please input 1(Linear) 2(Quadratic) or 3 (Qubic) interpolation.\nYour input:  ";
 			break;
-		}
+		}*/
 	}
 }
 

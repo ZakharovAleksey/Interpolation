@@ -36,7 +36,6 @@ public:
 	T FindInterpolationValue(T const x) override;
 
 private:
-
 	std::vector<QubicTuple<T>> spline_;
 };
 

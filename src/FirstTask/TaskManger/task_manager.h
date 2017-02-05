@@ -12,22 +12,24 @@
 
 #include<string>
 #include<cstring>
+#include<memory>
 
 template<typename T>
 class TaskManager
 {
 public:
+
 	TaskManager(std::string fileName1, std::string fileName2, std::string outFileName);
 	~TaskManager();
 
 	// Implements solving procedure
 	void Solve();
 
+
 private:
 
 	// Function allow user to choose interpolation order
 	void ChooseInterpolationType();
-
 
 	/// <summary>
 	/// Function gets necessary data from appropriate file
@@ -39,7 +41,8 @@ private:
 
 	void WriteResultToFile(const std::vector<Pair<T>> & res) const;
 
-	InterpolationSolver<T>* solverPtr_;
+	std::unique_ptr<InterpolationSolver<T>> solverPtr_;
+	//InterpolationSolver<T>* solverPtr_;
 
 	// First input file data
 	std::string fileName1_;

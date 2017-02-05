@@ -1,8 +1,9 @@
-#include "Interpolation.h"
 #pragma once
 
 #ifndef INTERPOLATION_IMPL
 #define INTERPOLATION_IMPL
+
+#include "Interpolation.h"
 
 #include<iostream>
 
@@ -21,7 +22,7 @@ inline void InterpolationSolver<T>::SetInutPairs(const std::vector<Pair<T>>& inp
 template<typename T>
 inline void InterpolationSolver<T>::SetOutputPoints(const std::vector<T>& outputPoints)
 {
-	outputPoints_ = outputPoints;
+	dotsForInterpolation_ = outputPoints;
 }
 
 template<typename T>
@@ -32,7 +33,7 @@ inline void InterpolationSolver<T>::DisplayInputData() const
 		std::cout << curPair.arg << " " << curPair.value << std::endl;
 
 	std::cout << "Output points: \n";
-	for (auto curPoint : outputPoints_)
+	for (auto curPoint : dotsForInterpolation_)
 		std::cout << curPoint << std::endl;
 }
 
@@ -46,7 +47,7 @@ inline std::vector<Pair<T>> InterpolationSolver<T>::FindAllInterpolationValues()
 	std::vector<Pair<T>> result;
 	Pair<T> curPair;
 
-	for (auto x : outputPoints_)
+	for (auto x : dotsForInterpolation_)
 	{
 		curPair.arg = x;
 		curPair.value = FindInterpolationValue(x);

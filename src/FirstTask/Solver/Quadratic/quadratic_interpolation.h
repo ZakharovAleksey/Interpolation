@@ -35,7 +35,6 @@ public:
 	T FindInterpolationValue(T const x) override;
 
 private:
-
 	std::vector<QuadraticTuple<T>> spline_;
 };
 

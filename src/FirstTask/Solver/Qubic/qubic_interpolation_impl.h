@@ -11,7 +11,7 @@ QubicInterpolationSolver<T>::QubicInterpolationSolver() : InterpolationSolver() 
 template<typename T>
 void QubicInterpolationSolver<T>::BuildInterpolation()
 {
-	// Prapare memory for result vector
+	// Prepare memory for result vector
 	int size = inputPairs_.size();
 	spline_.resize(size, QubicTuple<T>());
 

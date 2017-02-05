@@ -9,7 +9,6 @@ template<typename T>
 struct Pair;
 
 // Interface for Interpolation class
-
 template<typename T>
 class iInterpolation
 {
