@@ -1,6 +1,6 @@
 # Interpolation
 
-This project is the test task for the company Nekki.
+In this project two interpolation tasks have been implemented.
 
 To run an application on your own device tou need to make next steps:
 * Build solution with CMake.
