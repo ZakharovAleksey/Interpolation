@@ -103,7 +103,7 @@ inline void TaskManager<T>::ChooseInterpolationType()
 template<typename T>
 inline void TaskManager<T>::GetDataFromFile(std::ifstream & in, const int fileId, std::string const & fileName)
 {
-	in.open(fileName + ".txt");
+	in.open("FirstTaskFiles/" + fileName + ".txt");
 
 	if (in.is_open())
 	{
@@ -165,7 +165,7 @@ template<typename T>
 inline void TaskManager<T>::WriteResultToFile(const std::vector<Pair<T>> & res) const
 {
 	std::ofstream out;
-	out.open(outFileName_ + ".txt");
+	out.open("FirstTaskFiles/" + outFileName_ + ".txt");
 
 	if (out.is_open())
 	{
