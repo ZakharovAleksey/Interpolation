@@ -83,35 +83,20 @@ inline void TaskManager<T>::ChooseInterpolationType()
 		{
 		case 1:
 			solverPtr_ = std::unique_ptr<LinearInterpolationSolver<T>>(new LinearInterpolationSolver<T>);
+			isCorrectInput = true;
 			break;
 		case 2:
 			solverPtr_ = std::unique_ptr<QuadraticInterpolationSolver<T>>(new QuadraticInterpolationSolver<T>);
+			isCorrectInput = true;
 			break;
 		case 3:
 			solverPtr_ = std::unique_ptr<QubicInterpolationSolver<T>>(new QubicInterpolationSolver<T>);
+			isCorrectInput = true;
 			break;
 		default:
-			std::cout << "Error! Wrong input interpolation order! Could not create apropriate solver!\n";
+			std::cout << "Wrong input! Please input 1(Linear) 2(Quadratic) or 3(Qubic) interpolation.\nYour input:  ";
 			break;
 		}
-		/*switch (interpolOrder)
-		{
-		case int(InterpolationType::Linear) :
-			solverPtr_ = new LinearInterpolationSolver<T>();
-			isCorrectInput = true;
-			break;
-		case int(InterpolationType::Quadratic) :
-			solverPtr_ = new QuadraticInterpolationSolver<T>();
-			isCorrectInput = true;
-			break;
-		case int(InterpolationType::Qubic) :
-			solverPtr_ = new QubicInterpolationSolver<T>();
-			isCorrectInput = true;
-			break;
-		default:
-			std::cout << "Wrong input! Please input 1(Linear) 2(Quadratic) or 3 (Qubic) interpolation.\nYour input:  ";
-			break;
-		}*/
 	}
 }
 

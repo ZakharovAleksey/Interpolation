@@ -11,11 +11,11 @@ int main()
 
 	try
 	{
-		//TaskManager<float> manager("a", "b", "c");
-		//manager.Solve();
+		TaskManager<float> manager("a", "b", "c");
+		manager.Solve();
 
-		SecondTaskManager<float> manager(1.4, "SecondTaskFiles/dots", "SecondTaskFiles/conditions");
-		manager.CalculateGlobalPositions();
+		//SecondTaskManager<float> manager(1.4, "SecondTaskFiles/dots", "SecondTaskFiles/conditions");
+		//manager.CalculateGlobalPositions();
 	}
 	catch (const std::exception& ex)
 	{
