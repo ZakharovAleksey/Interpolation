@@ -35,6 +35,10 @@ public:
 	T FindInterpolationValue(T const x) override;
 
 private:
+
+	T BinSearch(const std::vector<LinearTuple<T>> & vec, int left, int right, T x) const;
+
+
 	std::vector<LinearTuple<T>> spline_;
 };
 

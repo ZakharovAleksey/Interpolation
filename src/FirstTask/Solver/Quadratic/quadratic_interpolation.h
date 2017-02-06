@@ -36,6 +36,8 @@ public:
 	T FindInterpolationValue(T const x) override;
 
 private:
+	T BinSearch(const std::vector<QuadraticTuple<T>> & vec, int left, int right, T x) const;
+
 	std::vector<QuadraticTuple<T>> spline_;
 };
 

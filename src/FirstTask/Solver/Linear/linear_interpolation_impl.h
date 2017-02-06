@@ -28,21 +28,39 @@ void LinearInterpolationSolver<T>::BuildInterpolation()
 
 }
 
+
 template<typename T>
 T LinearInterpolationSolver<T>::FindInterpolationValue(T const x) 
 {
-	for (auto i : spline_)
+	
+	if (spline_.at(0).leftBoundary > x || spline_.at(spline_.size() - 1).rightBoundary < x)
 	{
-		// If the current x is belongs to one of intervals return interpolation value
-		if (i.leftBoundary <= x && i.rightBoundary >= x)
+		std::cout << " X = " << x << " is not in interval! \n";
+		return T();
+	}
+	else
+		return  BinSearch(spline_, 0, spline_.size(), x);
+}
+
+template<typename T>
+inline T LinearInterpolationSolver<T>::BinSearch(const std::vector<LinearTuple<T>>& vec, int left, int right, T x) const
+{
+	int middle = 0;
+
+	while (left <= right)
+	{
+		middle = (left + right) / 2;
+
+		if (vec.at(middle).leftBoundary > x)
+			right = middle;
+		else if (vec.at(middle).rightBoundary < x)
+			left = middle;
+		else
 		{
-			return i.a * x + i.b;
+			LinearTuple<T> lol = vec.at(middle);
+			return lol.a * x + lol.b;
 		}
 	}
-
-	std::cout << " X = " << x << " is not in interval! \n";
-
-	return T(); 
 }
 
 #endif // !LINEAR_INTERPOLATION_IMPL

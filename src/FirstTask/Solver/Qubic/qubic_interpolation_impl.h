@@ -22,7 +22,7 @@ void QubicInterpolationSolver<T>::BuildInterpolation()
 
 		// Set boundaries for each interval
 		spline_.at(i).leftBoundary = inputPairs_.at(i).arg;
-		spline_.at(i).rightBoundary = (i == inputPairs_.size() - 1) ? inputPairs_.at(i).arg + 1 : inputPairs_.at(i + 1).arg;
+		spline_.at(i).rightBoundary = (i == inputPairs_.size() - 1) ? inputPairs_.at(i).arg + 1e-3 : inputPairs_.at(i + 1).arg;
 	}
 
 	// Vector store coefficients for Sweep line algorithm
@@ -70,19 +70,35 @@ void QubicInterpolationSolver<T>::BuildInterpolation()
 template<typename T>
 T QubicInterpolationSolver<T>::FindInterpolationValue(T const x)
 {
-	for (auto i : spline_)
+	if (spline_.at(0).leftBoundary > x || spline_.at(spline_.size() - 1).rightBoundary < x)
 	{
-		// If the current x is belongs to one of intervals return interpolation value
-		if (i.leftBoundary <= x && i.rightBoundary >= x)
+		std::cout << " X = " << x << " is not in interval! \n";
+		return T();
+	}
+	else
+		return  BinSearch(spline_, 0, spline_.size(), x);
+}
+
+template<typename T>
+inline T QubicInterpolationSolver<T>::BinSearch(const std::vector<QubicTuple<T>>& vec, int left, int right, T x) const
+{
+	int middle = 0;
+
+	while (left <= right)
+	{
+		middle = (left + right) / 2;
+
+		if (vec.at(middle).leftBoundary > x)
+			right = middle;
+		else if (vec.at(middle).rightBoundary < x)
+			left = middle;
+		else
 		{
-			double dx = x - i.leftBoundary;
-			return i.a + (i.b + (i.c / 2. + i.d * dx / 6.) * dx) * dx;
+			QubicTuple<T> res = vec.at(middle);
+			double dx = x - res.leftBoundary;
+			return res.a + (res.b + (res.c / 2. + res.d * dx / 6.) * dx) * dx;
 		}
 	}
-
-	std::cout << "X = " << x << " is not in interval\n";
-
-	return T();
 }
 
 #endif // !QUBIC_INTERPOLATION_IMPL
